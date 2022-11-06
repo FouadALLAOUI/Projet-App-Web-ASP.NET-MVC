@@ -1,0 +1,163 @@
+﻿@model Projet_RIO71_app.Models.ClientLogin
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: "Open Sans";
+        color: #fff;
+        background: url("../../Images/ctalogue_image/cata2.jpg");
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-position: center center;
+    }
+
+    section {
+        height: 100vh;
+        width: 100%;
+        background-size: cover;
+        background-position: center center;
+    }
+
+    .form-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 380px;
+        padding: 50px 30px;
+        border-radius: 10px;
+        box-shadow: 7px 7px 60px #000;
+    }
+
+    h1 {
+        color: #ffffff;
+        font-size: 2em;
+        text-transform: uppercase;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .control .input {
+        padding: 10px;
+        font-size: 16px;
+        display: block;
+        width: 100%;
+        color: #000;
+        background: #ddd;
+        outline: none;
+        border: none;
+        margin: 1em 0;
+    }
+
+    .control .btn {
+        color: #fff;
+        text-transform: uppercase;
+        background: #808080;
+        opacity: .7;
+        transition: opacity .3s ease;
+    }
+
+    .btn:focus {
+        opacity: 1;
+    }
+
+    p {
+        text-align: center;
+    }
+
+    a {
+        text-decoration: none;
+        color: #fff;
+        opacity: .7;
+    }
+
+        a:hover {
+            opacity: 1;
+        }
+</style>
+
+
+<section>
+    <div class="form-container">
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert alert-danger">
+                <strong>Error!</strong>@ViewBag.Message
+            </div>
+        }
+        <h1>Login</h1>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.Label("Email", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.EmailID, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.EmailID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.RememberMe)
+                            @Html.Label("Remember", htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.ValidationMessageFor(model => model.RememberMe, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="control" style="margin-top: 40px;">
+                    <input type="submit" class="btn" value="Login">
+                </div>
+            </div>
+        }
+        <div class="btn">
+            @Html.ActionLink("Registration", "Registration", new { @class = "btn" })
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

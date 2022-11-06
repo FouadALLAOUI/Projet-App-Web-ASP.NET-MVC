@@ -1,0 +1,119 @@
+﻿@model Projet_RIO71_app.PRODUIT
+@{
+    ViewBag.Title = "GestionProducts";
+}
+
+<style>
+    body {
+       @* background-image: url("../../Images/Admin_image/4.jpg");*@
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-position: center center;
+    }
+</style>
+
+<h2>Manage of Products</h2>
+<br />
+@Html.ActionLink("Page Principale", "Index", "Admin")
+<hr />
+<br />
+<div>
+    <button style="margin-top: 15px" class="btn btn-success">@Html.ActionLink("Add new Product", "AddProduct")</button>
+</div>
+<br />
+<br />
+<table id="employeTable" class="display">
+    <!--class="table table-striped table-bordered"-->
+    <thead>
+        <tr>
+            <th>ProduitID</th>
+            <th>Nom</th>
+            <th>Description</th>
+            <th>Photo</th>
+            <th>Prix</th>
+            <th>FournisseurID</th>
+            <th>CategorieID</th>
+            <th></th>
+        </tr>
+    </thead>
+</table>
+
+
+<!--new link-->
+<link href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+<!--
+<link href="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js" rel="stylesheet" type="text/css"></link>
+-->
+
+@section Scripts {
+
+    <script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        var dataTable;
+        $(document).ready(function () {
+            dataTable=$("#employeTable").DataTable({
+                "ajax": {
+                    "url": "/Admin/GetProducts",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+
+                "columns": [
+                    { "data": "ProduitID" },
+                    { "data": "Nom" },
+                    { "data": "Description" },
+                    {
+                        "data": "Photo",
+                        "render": function (data, type, row) {
+                            return '<img width="30%" src="/Images/ProductBase/' + data + '" />';
+                        },
+                    },
+                    { "data": "Prix" },
+                    { "data": "FournisseurID" },
+                    { "data": "CategorieID" },
+                    {
+                        "data": "ProduitID",
+                        "render": function (data) {
+                            return "<a class='btn btn-danger btn-sm' style='margin-left:5px' onclick=Delete(" + data + ")><i class='fa fa-trash'></i> Delete</a>";
+                        },
+                        "orderable": false,
+                        "searchable": false,
+                        "width": "150px"
+                    }
+                ],
+
+                "language": {
+                    "emptyTable": "No data found , Click <b> Add new Product </b> for adding product ! "
+                }
+            });
+        });
+
+         function Delete(id) {
+            if (confirm('Are You Sure to Delete this Client ?')) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("DeleteProduct","Admin")/' + id,
+                    success: function (data) {
+                        if (data.success) {
+                            dataTable.ajax.reload();
+
+                            $.notify(data.message, {
+                                globalPosition: "top center",
+                                className: "success"
+                            })
+
+                        }
+                    }
+
+                });
+            }
+        }
+
+    </script>
+
+
+
+}
+

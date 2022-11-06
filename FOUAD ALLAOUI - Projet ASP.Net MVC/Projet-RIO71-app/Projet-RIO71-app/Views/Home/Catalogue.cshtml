@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Catalogue";
+}
+
+<style>
+    section {
+        margin: 0px;
+        padding: 20%;
+        background-image: url("/Images/ctalogue_image/cata2.jpg");
+        font-display: fallback;
+    }
+</style>
+<section class=""></section>
+<br /><br />
+<h2>Search by Catrgory :</h2>
+@Html.DropDownList("CategoryList", ViewBag.CategoryListName as SelectList, "Select Category", new { @class = "form-control", @onchange = "Change(this.value)" })
+
+<div id="partialProd">
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+        function Change(val) {
+           var url = '@Url.Action("GetPartialeProducts","Home")?CategID='+val;
+           console.log("val = " + val);
+            console.log("Url = " + url);
+            $('#partialProd').empty();
+            $('#partialProd').load(url);
+        }
+</script>
+

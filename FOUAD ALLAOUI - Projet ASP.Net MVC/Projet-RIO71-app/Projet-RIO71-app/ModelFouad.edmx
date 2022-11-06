@@ -1,0 +1,362 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="M3IModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="AdminID" />
+          </Key>
+          <Property Name="AdminID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmailID" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="CATEGORY">
+          <Key>
+            <PropertyRef Name="CategorieID" />
+          </Key>
+          <Property Name="CategorieID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nom" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CLIENT">
+          <Key>
+            <PropertyRef Name="ClientID" />
+          </Key>
+          <Property Name="ClientID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmailID" Type="nvarchar" MaxLength="50" />
+          <Property Name="DateOfBirth" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar(max)" />
+          <Property Name="IsEmailVerified" Type="bit" />
+          <Property Name="ActivationCode" Type="uniqueidentifier" />
+          <Property Name="Photo" Type="nvarchar" MaxLength="50" />
+          <Property Name="Adresse" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="COULEUR">
+          <Key>
+            <PropertyRef Name="CouleurID" />
+          </Key>
+          <Property Name="CouleurID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Libelle" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="FOURNISSEUR">
+          <Key>
+            <PropertyRef Name="FournisseurID" />
+          </Key>
+          <Property Name="FournisseurID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nom" Type="nvarchar" MaxLength="50" />
+          <Property Name="Adresse" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="PRODUIT">
+          <Key>
+            <PropertyRef Name="ProduitID" />
+          </Key>
+          <Property Name="ProduitID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nom" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" />
+          <Property Name="Photo" Type="nvarchar" MaxLength="50" />
+          <Property Name="Prix" Type="int" />
+          <Property Name="FournisseurID" Type="int" />
+          <Property Name="CategorieID" Type="int" />
+        </EntityType>
+        <EntityType Name="PRODUIT_COULEUR">
+          <Key>
+            <PropertyRef Name="ProduitID" />
+            <PropertyRef Name="CouleurID" />
+          </Key>
+          <Property Name="ProduitID" Type="int" Nullable="false" />
+          <Property Name="CouleurID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_PRODUIT_CATEGORY">
+          <End Role="CATEGORY" Type="Self.CATEGORY" Multiplicity="0..1" />
+          <End Role="PRODUIT" Type="Self.PRODUIT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CATEGORY">
+              <PropertyRef Name="CategorieID" />
+            </Principal>
+            <Dependent Role="PRODUIT">
+              <PropertyRef Name="CategorieID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUIT_COULEUR_COULEUR">
+          <End Role="COULEUR" Type="Self.COULEUR" Multiplicity="1" />
+          <End Role="PRODUIT_COULEUR" Type="Self.PRODUIT_COULEUR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COULEUR">
+              <PropertyRef Name="CouleurID" />
+            </Principal>
+            <Dependent Role="PRODUIT_COULEUR">
+              <PropertyRef Name="CouleurID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUIT_COULEUR_PRODUIT">
+          <End Role="PRODUIT" Type="Self.PRODUIT" Multiplicity="1" />
+          <End Role="PRODUIT_COULEUR" Type="Self.PRODUIT_COULEUR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUIT">
+              <PropertyRef Name="ProduitID" />
+            </Principal>
+            <Dependent Role="PRODUIT_COULEUR">
+              <PropertyRef Name="ProduitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUIT_FOURNISSEUR">
+          <End Role="FOURNISSEUR" Type="Self.FOURNISSEUR" Multiplicity="0..1" />
+          <End Role="PRODUIT" Type="Self.PRODUIT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FOURNISSEUR">
+              <PropertyRef Name="FournisseurID" />
+            </Principal>
+            <Dependent Role="PRODUIT">
+              <PropertyRef Name="FournisseurID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="M3IModelStoreContainer">
+          <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CATEGORY" EntityType="Self.CATEGORY" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CLIENT" EntityType="Self.CLIENT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="COULEUR" EntityType="Self.COULEUR" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FOURNISSEUR" EntityType="Self.FOURNISSEUR" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUIT" EntityType="Self.PRODUIT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUIT_COULEUR" EntityType="Self.PRODUIT_COULEUR" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_PRODUIT_CATEGORY" Association="Self.FK_PRODUIT_CATEGORY">
+            <End Role="CATEGORY" EntitySet="CATEGORY" />
+            <End Role="PRODUIT" EntitySet="PRODUIT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUIT_COULEUR_COULEUR" Association="Self.FK_PRODUIT_COULEUR_COULEUR">
+            <End Role="COULEUR" EntitySet="COULEUR" />
+            <End Role="PRODUIT_COULEUR" EntitySet="PRODUIT_COULEUR" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUIT_COULEUR_PRODUIT" Association="Self.FK_PRODUIT_COULEUR_PRODUIT">
+            <End Role="PRODUIT" EntitySet="PRODUIT" />
+            <End Role="PRODUIT_COULEUR" EntitySet="PRODUIT_COULEUR" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUIT_FOURNISSEUR" Association="Self.FK_PRODUIT_FOURNISSEUR">
+            <End Role="FOURNISSEUR" EntitySet="FOURNISSEUR" />
+            <End Role="PRODUIT" EntitySet="PRODUIT" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="M3IModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="AdminID" />
+          </Key>
+          <Property Name="AdminID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmailID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CATEGORY">
+          <Key>
+            <PropertyRef Name="CategorieID" />
+          </Key>
+          <Property Name="CategorieID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PRODUITs" Relationship="Self.FK_PRODUIT_CATEGORY" FromRole="CATEGORY" ToRole="PRODUIT" />
+        </EntityType>
+        <EntityType Name="CLIENT">
+          <Key>
+            <PropertyRef Name="ClientID" />
+          </Key>
+          <Property Name="ClientID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmailID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateOfBirth" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsEmailVerified" Type="Boolean" />
+          <Property Name="ActivationCode" Type="Guid" />
+          <Property Name="Photo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Adresse" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="COULEUR">
+          <Key>
+            <PropertyRef Name="CouleurID" />
+          </Key>
+          <Property Name="CouleurID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Libelle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PRODUITs" Relationship="Self.PRODUIT_COULEUR" FromRole="COULEUR" ToRole="PRODUIT" />
+        </EntityType>
+        <EntityType Name="FOURNISSEUR">
+          <Key>
+            <PropertyRef Name="FournisseurID" />
+          </Key>
+          <Property Name="FournisseurID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Adresse" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PRODUITs" Relationship="Self.FK_PRODUIT_FOURNISSEUR" FromRole="FOURNISSEUR" ToRole="PRODUIT" />
+        </EntityType>
+        <EntityType Name="PRODUIT">
+          <Key>
+            <PropertyRef Name="ProduitID" />
+          </Key>
+          <Property Name="ProduitID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Photo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Prix" Type="Int32" />
+          <Property Name="FournisseurID" Type="Int32" />
+          <Property Name="CategorieID" Type="Int32" />
+          <NavigationProperty Name="CATEGORY" Relationship="Self.FK_PRODUIT_CATEGORY" FromRole="PRODUIT" ToRole="CATEGORY" />
+          <NavigationProperty Name="FOURNISSEUR" Relationship="Self.FK_PRODUIT_FOURNISSEUR" FromRole="PRODUIT" ToRole="FOURNISSEUR" />
+          <NavigationProperty Name="COULEURs" Relationship="Self.PRODUIT_COULEUR" FromRole="PRODUIT" ToRole="COULEUR" />
+        </EntityType>
+        <Association Name="FK_PRODUIT_CATEGORY">
+          <End Role="CATEGORY" Type="Self.CATEGORY" Multiplicity="0..1" />
+          <End Role="PRODUIT" Type="Self.PRODUIT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CATEGORY">
+              <PropertyRef Name="CategorieID" />
+            </Principal>
+            <Dependent Role="PRODUIT">
+              <PropertyRef Name="CategorieID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUIT_FOURNISSEUR">
+          <End Role="FOURNISSEUR" Type="Self.FOURNISSEUR" Multiplicity="0..1" />
+          <End Role="PRODUIT" Type="Self.PRODUIT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FOURNISSEUR">
+              <PropertyRef Name="FournisseurID" />
+            </Principal>
+            <Dependent Role="PRODUIT">
+              <PropertyRef Name="FournisseurID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PRODUIT_COULEUR">
+          <End Role="COULEUR" Type="Self.COULEUR" Multiplicity="*" />
+          <End Role="PRODUIT" Type="Self.PRODUIT" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="M3IDatabaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Admins" EntityType="Self.Admin" />
+          <EntitySet Name="CATEGORies" EntityType="Self.CATEGORY" />
+          <EntitySet Name="CLIENTs" EntityType="Self.CLIENT" />
+          <EntitySet Name="COULEURs" EntityType="Self.COULEUR" />
+          <EntitySet Name="FOURNISSEURs" EntityType="Self.FOURNISSEUR" />
+          <EntitySet Name="PRODUITs" EntityType="Self.PRODUIT" />
+          <AssociationSet Name="FK_PRODUIT_CATEGORY" Association="Self.FK_PRODUIT_CATEGORY">
+            <End Role="CATEGORY" EntitySet="CATEGORies" />
+            <End Role="PRODUIT" EntitySet="PRODUITs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUIT_FOURNISSEUR" Association="Self.FK_PRODUIT_FOURNISSEUR">
+            <End Role="FOURNISSEUR" EntitySet="FOURNISSEURs" />
+            <End Role="PRODUIT" EntitySet="PRODUITs" />
+          </AssociationSet>
+          <AssociationSet Name="PRODUIT_COULEUR" Association="Self.PRODUIT_COULEUR">
+            <End Role="COULEUR" EntitySet="COULEURs" />
+            <End Role="PRODUIT" EntitySet="PRODUITs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="M3IModelStoreContainer" CdmEntityContainer="M3IDatabaseEntities">
+          <EntitySetMapping Name="Admins">
+            <EntityTypeMapping TypeName="M3IModel.Admin">
+              <MappingFragment StoreEntitySet="Admin">
+                <ScalarProperty Name="AdminID" ColumnName="AdminID" />
+                <ScalarProperty Name="EmailID" ColumnName="EmailID" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CATEGORies">
+            <EntityTypeMapping TypeName="M3IModel.CATEGORY">
+              <MappingFragment StoreEntitySet="CATEGORY">
+                <ScalarProperty Name="CategorieID" ColumnName="CategorieID" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CLIENTs">
+            <EntityTypeMapping TypeName="M3IModel.CLIENT">
+              <MappingFragment StoreEntitySet="CLIENT">
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="EmailID" ColumnName="EmailID" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="IsEmailVerified" ColumnName="IsEmailVerified" />
+                <ScalarProperty Name="ActivationCode" ColumnName="ActivationCode" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="Adresse" ColumnName="Adresse" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="COULEURs">
+            <EntityTypeMapping TypeName="M3IModel.COULEUR">
+              <MappingFragment StoreEntitySet="COULEUR">
+                <ScalarProperty Name="CouleurID" ColumnName="CouleurID" />
+                <ScalarProperty Name="Libelle" ColumnName="Libelle" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FOURNISSEURs">
+            <EntityTypeMapping TypeName="M3IModel.FOURNISSEUR">
+              <MappingFragment StoreEntitySet="FOURNISSEUR">
+                <ScalarProperty Name="FournisseurID" ColumnName="FournisseurID" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Adresse" ColumnName="Adresse" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRODUITs">
+            <EntityTypeMapping TypeName="M3IModel.PRODUIT">
+              <MappingFragment StoreEntitySet="PRODUIT">
+                <ScalarProperty Name="ProduitID" ColumnName="ProduitID" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="Prix" ColumnName="Prix" />
+                <ScalarProperty Name="FournisseurID" ColumnName="FournisseurID" />
+                <ScalarProperty Name="CategorieID" ColumnName="CategorieID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="PRODUIT_COULEUR" TypeName="M3IModel.PRODUIT_COULEUR" StoreEntitySet="PRODUIT_COULEUR">
+            <EndProperty Name="COULEUR">
+              <ScalarProperty Name="CouleurID" ColumnName="CouleurID" />
+            </EndProperty>
+            <EndProperty Name="PRODUIT">
+              <ScalarProperty Name="ProduitID" ColumnName="ProduitID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

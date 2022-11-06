@@ -1,0 +1,104 @@
+﻿@{
+    ViewBag.Title = "MultipleSearch";
+}
+<br />
+<hr />
+<div style="width: 90%; margin: 10px auto;">
+    <div>
+        <table id="prodTable" class="table table-responsive table-striped">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Photo</th>
+                    <th>Prix</th>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<br /><br />
+<div id="partialProd">
+
+</div>
+
+
+@*JQuery css*@
+<link href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+@*JQuery*@
+@section Scripts {
+    <script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            $("#prodTable").DataTable({
+                "ajax": {
+                    "url": "/Home/GetMultipleSearch",
+                    "type": "post",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "Nom" },
+                    { "data": "Description"},
+                    {
+                        "data": "Photo",
+                        "render": function (data,type,row) {
+                            return '<img width="5%" src="/Images/ProductBase/'+data+'" />';
+                        },
+                    },
+                    { "data": "Prix" },
+                    {
+                        "data": "ProduitID",
+                        "render": function (data) {
+                            return "<a class='btn btn-primary btn-sm' style='margin-left:5px' onclick=Detailes(" + data + ")> Detailes</a>";
+                        },
+                        "orderable": false,
+                        "searchable": false,
+                        "width": "150px"
+                    }
+
+                ]
+            });
+        });
+
+        function Detailes(id) {
+           @*$.ajax({
+               type: "POST",
+               url: '@Url.Action("Details","Home")/' + id,
+           });*@
+            var url = '@Url.Action("Details","Home")?id=' + id;
+            console.log("Url = " + url);
+            $('#partialProd').empty();
+            $('#partialProd').load(url);
+        }
+
+    </script>
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

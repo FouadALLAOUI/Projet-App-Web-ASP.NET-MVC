@@ -1,0 +1,158 @@
+﻿
+@{
+    ViewBag.Title = "GestionClients";
+}
+
+<style>
+    body {
+       @* background-image: url("../../Images/Admin_image/2.jpg");*@
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-position: center center;
+    }
+</style>
+
+
+<h2>GestionClients</h2>
+<br />
+@Html.ActionLink("Page Principale", "Index", "Admin")
+<hr />
+<br />
+<!-- Button MODEL ADD -->
+<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Client</button>
+<br />
+<br />
+<table id="clientTable" class="display">
+    <!--class="table table-striped table-bordered" class="display"-->
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email ID</th>
+            <th>Date of Birth</th>
+            <th>Photo</th>
+            <th>Adresse</th>
+            <th></th>
+        </tr>
+    </thead>
+</table>
+
+<link href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+<!-------------------------------------****************MODEL OF ADD****************------------------------------------------------->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add the new Client</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("AddClient", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">First Name :</label>
+                        <input type="text" name="FirstName" class="form-control" id="exampleInputEmail1" required="">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Last Name :</label>
+                        <input type="text" name="LastName" class="form-control" id="exampleInputEmail1" required="">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email :</label>
+                        <input type="email" name="EmailID" class="form-control" id="exampleInputEmail1" required="">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Date Of Birth :</label>
+                        <input type="date" name="DateOfBirth" class="form-control" id="exampleInputEmail1" required="">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Photo :</label>
+                        <input class="form-control" type="file" name="file" id="file" style="width:100%;" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Password :</label>
+                        <input type="password" name="Password" class="form-control" id="exampleInputEmail1" required="">
+                    </div>
+                    <button type="submit" class="btn btn-success">Create Client</button>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+
+    <script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+
+
+    <script>
+        var  dataTable;
+
+        $(document).ready(function () {
+            dataTable = $("#clientTable").DataTable({
+                "ajax": {
+                    "url": "/Admin/GetClients",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "ClientID" },
+                    { "data": "FirstName" },
+                    { "data": "LastName" },
+                    { "data": "EmailID" },
+                    { "data": "DateOfBirth" },
+                    { "data": "Photo" },
+                    { "data": "Adresse" },
+                    {
+                        "data": "ClientID",
+                        "render": function (data) {
+                            return "<a class='btn btn-danger btn-sm' style='margin-left:5px' onclick=Delete(" + data + ")><i class='fa fa-trash'></i> Delete</a>";
+                        },
+                        "orderable": false,
+                        "searchable": false,
+                        "width": "150px"
+                    }
+                ],
+                "language": {
+                    "emptyTable": "No data found , Click <b>Add Client</b> to add a new client! "
+                }
+
+            });
+        });
+
+        function Delete(id) {
+            if(confirm('Are You Sure to Delete this Client ?'))
+            {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("DeleteClient","Admin")/' + id,
+                    success: function (data) {
+                        if (data.success)
+                        {
+                            dataTable.ajax.reload();
+
+                            $.notify(data.message, {
+                                globalPosition: "top center",
+                                className: "success"
+                            })
+
+                        }
+                    }
+
+                });
+            }
+        }
+
+    </script>
+}
+

@@ -1,0 +1,76 @@
+﻿
+<h2 class="text-center">All Products Found</h2>
+<link href="~/Content/myowenstyle/partialeprod.css" rel="stylesheet" />
+<div class="container mt-5 mb-5">
+    <div class="d-flex justify-content-center row">
+        <div class="col-md-10">
+            @foreach (var p in ViewBag.listProd)
+            {
+                <div style="background-color: white; border-radius: 25px;padding:20px; margin: 20px;">
+                    <div class="row p-2 bg-white border rounded">
+                        <div class="col-6 col-sm-3"><img style="border-radius: 15px; " class="img-fluid img-responsive rounded product-image" src="~/Images/ProductBase/@p.Photo"></div>
+                        <div class="col-6 col-sm-3">
+                            <h3>@p.Nom</h3>
+                            <p class="text-justify text-truncate para mb-0">@p.Description<br><br></p>
+                        </div>
+                        <div class="align-items-center align-content-center col-md-3 border-left mt-1">
+                            <div class="d-flex flex-row align-items-center">
+                                @{ var x = p.Prix + (p.Prix / 4);}
+                                <h4 class="mr-1">@p.Prix</h4><span class="strike-text">@x</span>
+                            </div>
+                            <div class="d-flex flex-column mt-4">
+                                More Details
+                                @*<button class="btn btn-outline-primary btn-sm mt-2" type="button">Ajouter au panier</button>*@
+                                <button class="btn btn-outline-primary btn-sm mt-2" type="button">@Html.ActionLink("Ajouter au panier", "OrderNow", "ShoppingCart", new { id = p.ProduitID }, null)</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

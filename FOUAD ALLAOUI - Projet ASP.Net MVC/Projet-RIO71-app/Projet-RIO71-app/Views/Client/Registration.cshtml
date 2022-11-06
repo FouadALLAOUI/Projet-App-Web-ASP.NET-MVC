@@ -1,0 +1,210 @@
+﻿@model Projet_RIO71_app.CLIENT
+
+@{
+    ViewBag.Title = "Registration";
+}
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: "Open Sans";
+        color: #fff;
+        background: url("../../Images/ctalogue_image/cata2.jpg");
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-position: center center;
+    }
+
+    section {
+        height: 100vh;
+        width: 100%;
+        background-size: cover;
+        background-position: center center;
+    }
+
+    .form-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 380px;
+        padding: 50px 30px;
+        border-radius: 10px;
+        box-shadow: 7px 7px 60px #000;
+    }
+
+    .form-group{
+        margin: 20px;
+    }
+
+    h1 {
+        color: #ffffff;
+        font-size: 2em;
+        text-transform: uppercase;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .control .input {
+        padding: 10px;
+        font-size: 16px;
+        display: block;
+        width: 100%;
+        color: #000;
+        background: #ddd;
+        outline: none;
+        border: none;
+        margin: 1em 0;
+    }
+
+    .control .btn {
+        color: #fff;
+        text-transform: uppercase;
+        background: #808080;
+        opacity: .7;
+        transition: opacity .3s ease;
+    }
+
+    .btn:focus {
+        opacity: 1;
+    }
+
+    p {
+        text-align: center;
+    }
+
+    a {
+        text-decoration: none;
+        color: #fff;
+        opacity: .7;
+    }
+
+        a:hover {
+            opacity: 1;
+        }
+</style>
+
+
+<section>
+    <div class="form-container">
+        @if (ViewBag.Status != null && Convert.ToBoolean(ViewBag.Status))
+        {
+
+            if (ViewBag.Message != null)
+            {
+                <div class="alert alert-success">
+                    <strong>Success!</strong>@ViewBag.Message
+                </div>
+            }
+
+        }
+        else
+        {
+
+            <h1>Registeration</h1>
+            using (Html.BeginForm("Registration", "Client", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", @placeholder = "First Name" } })
+                            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Last Name" } })
+                            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.EmailID, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email" } })
+                            @Html.ValidationMessageFor(model => model.EmailID, "", new { @class = "text-danger" })
+                            @Html.ValidationMessage("EmailExist", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Of Birth" } })
+                            @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Photo, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <input class="form-control" type="file" name="file" id="file" style="width:100%;" />
+                            @Html.ValidationMessageFor(model => model.Photo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Adresse, new { htmlAttributes = new { @class = "form-control", @placeholder = "Adresse" } })
+                            @Html.ValidationMessageFor(model => model.Adresse, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @placeholder = "Password" } })
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", @placeholder = "Confirm your password" } })
+                            @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="align-content:center;">
+                        <div class="col-md-offset-2 col-md-10 justify-content-center">
+                            <input type="submit" value="Regetrer" class="btn btn-success" />
+                        </div>
+                    </div>
+                </div>
+
+                if (ViewBag.Message != null)
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong>@ViewBag.Message
+                    </div>
+                }
+
+            }
+        }
+        <div class="btn">
+            @Html.ActionLink("Login", "Login", new { @class = "btn" })
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+@section Scripts {
+
+}

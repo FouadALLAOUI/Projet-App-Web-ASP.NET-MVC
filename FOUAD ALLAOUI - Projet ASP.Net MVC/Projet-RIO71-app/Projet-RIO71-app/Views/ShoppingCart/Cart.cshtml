@@ -1,0 +1,51 @@
+﻿@using Projet_RIO71_app.Models
+
+@{
+    ViewBag.Title = "Cart";
+}
+
+<h2>Panir des votre Produits</h2>
+<hr />
+<br />
+<br />
+
+<section>
+    <table class="table table-hover">
+        <tr>
+            <th>Option</th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Sub Total</th>
+        </tr>
+        @{ var s = 0; }
+        @foreach (Item item in (List<Item>)Session["cart"])
+        {
+            s += (int)item.Product.Prix * item.Quantity;
+            <tr>
+                <td><button class="btn btn-danger">@Html.ActionLink("Delete", "Delete", "ShoppingCart", new { id = item.Product.ProduitID }, null)</button></td>
+                <td><img style="height: 10%; width: 10%;" src="~/Images/ProductBase/@item.Product.Photo" /></td>
+                <td>@item.Product.Nom</td>
+                <td>@item.Product.Prix</td>
+                <td>@item.Quantity</td>
+                <td>@(item.Product.Prix * item.Quantity)</td>
+            </tr>
+        }
+        <tr>
+            <td align="right" colspan="5">Sum</td>
+            <td>@s</td>
+        </tr>
+    </table>
+
+    <br /><br />
+    <div class="d-grid gap-2 col-6 mx-auto">
+        @Html.ActionLink("Return to Catalogue", "Catalogue", "Home")
+    </div>
+
+
+</section>
+
+
+
+

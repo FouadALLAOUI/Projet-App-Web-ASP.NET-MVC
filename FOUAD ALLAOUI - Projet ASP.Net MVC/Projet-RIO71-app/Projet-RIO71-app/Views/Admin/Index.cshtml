@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<style>
+    body {
+        color: #fff;
+        background-image: url("../../Images/Admin_image/0.jpg");
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-position: center center;
+    }
+
+    .marg {
+        margin: 35px;
+    }
+</style>
+
+@Html.ActionLink("Manage of Products", "GestionProducts", "Admin", new { @class = " marg btn btn-outline-success d-grid  col-6 mx-auto" })
+@Html.ActionLink("Manage of Clients", "GestionClients", "Admin", new { @class = " marg btn btn-outline-success d-grid  col-6 mx-auto" })
+@Html.ActionLink("Manage of Fournisseurs", "GestionFournisseurs", "Admin", new { @class = " marg btn btn-outline-success d-grid  col-6 mx-auto" })
+@Html.ActionLink("Manage of Admins", "GestionAdmins", "Admin", new { @class = " marg btn btn-outline-success d-grid  col-6 mx-auto" })
+
+@Html.ActionLink("Logout", "Login", "Client")
+
+
+
+
+
+
+
+
+
+

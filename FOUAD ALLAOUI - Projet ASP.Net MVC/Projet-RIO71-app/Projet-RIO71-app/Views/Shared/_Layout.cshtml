@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Mon application ASP.NET</title>
+    @if (ViewBag.Title == "HomeIndex")
+    {
+        <link href="~/Content/myowenstyle/home_index_style.css" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="~/Content/Site.css" rel="stylesheet" />
+        <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    }
+</head>
+<body>
+
+
+    @if (ViewBag.Title == "HomeIndex")
+    {
+        @RenderBody()
+    }
+    else
+    {
+        <div class="container align-content-xxl-center">
+
+            @if (ViewBag.Title == "Catalogue" || ViewBag.Title == "MultipleSearch" || ViewBag.Title == "Details")
+            {
+                <link href="~/Content/myowenstyle/catalogue_style.css" rel="stylesheet" />
+                <header>
+                    <h2 class="logo">RIO</h2>
+                    <nav>
+                        <ul class="nav_links">
+                            <li><a href="#">@Html.ActionLink("Catalogue", "Catalogue", "Home")</a></li>
+                            <li><a href="#">@Html.ActionLink("Multi-Search", "MultipleSearch","Home")</a></li>
+                            <li><a href="#">Panier</a></li>
+                            <li><a href="#">@Html.ActionLink("Logout", "Login", "Client")</a></li>
+                        </ul>
+                    </nav>
+                    <a class="cta" href="#"><button>Contact</button></a>
+                </header>
+            }
+
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - RIO Application</p>
+            </footer>
+        </div>
+
+    }
+
+    <script src="~/Scripts/jquery-2.0.0.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/notify.min.js"></script>
+    @RenderSection("Scripts", false)
+
+
+</body>
+</html>

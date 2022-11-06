@@ -1,0 +1,153 @@
+﻿
+@{
+    ViewBag.Title = "GestionAdmins";
+}
+<style>
+    body {
+        @*background-image: url("../../Images/Admin_image/1.jpg");*@
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-position: center center;
+    }
+</style>
+<h2>Admins CRUD operations</h2>
+<br />
+@Html.ActionLink("Page Principale", "Index", "Admin")
+<hr />
+<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Add new Admin
+</button>
+<br />
+<br />
+
+<table id="adminTable" class="display">
+    <!--class="table table-striped table-bordered"-->
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Email ID</th>
+            <th>Password</th>
+            <th></th>
+        </tr>
+    </thead>
+</table>
+
+
+<!-- Modal Add -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add new Admin</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="@Url.Action("AddAdmin","Admin")" method="POST">
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email :</label>
+                        <input type="email" name="email" class="form-control" id="exampleInputEmail1" required="">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Password :</label>
+                        <input type="password" name="password" class="form-control" id="exampleInputEmail1" required="">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Conforme Password :</label>
+                        <input type="password" name="cpassword" class="form-control" id="exampleInputEmail1" required="">
+                    </div>
+                    <button onclick="AddAdmin()" type="submit" class="btn btn-success">Create Admin</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!--new link-->
+
+<link href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+<!--
+<link href="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js" rel="stylesheet" type="text/css"></link>
+-->
+
+
+@section Scripts {
+
+    <script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        var dataTable;
+        $(document).ready(function () {
+            dataTable = $("#adminTable").DataTable({
+                "ajax": {
+                    "url": "/Admin/GetAdmins",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "AdminID" },
+                    { "data": "EmailID" },
+                    { "data": "Password" },
+                    {
+                        "data": "AdminID",
+                        "render": function (data)
+                                  {
+                                     return "<a class='btn btn-danger btn-sm' style='margin-left:5px' onclick=Delete(" + data + ")><i class='fa fa-trash'></i> Delete</a>";
+                                  },
+                        "orderable": false,
+                        "searchable":false,
+                        "width":"150px"
+                    }
+                ],
+                "language": {
+                    "emptyTable": "No data found , Click <b> Add new </b> for adding Admin ! "
+                }
+
+            });
+        });
+
+        function AddAdmin() {
+            var form = document.querySelector('form');
+            form.onsubmit = function (e) {
+                    dataTable.ajax.reload();
+            }
+        }
+
+        function Delete(id) {
+            if(confirm('Are You Sure to Delete this Admin ?'))
+            {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("DeleteAdmin","Admin")/' + id,
+                    success: function (data) {
+                        if (data.success)
+                        {
+                            dataTable.ajax.reload();
+
+                            $.notify(data.message, {
+                                globalPosition: "top center",
+                                className: "success"
+                            });
+
+                        }
+                    }
+
+                });
+            }
+        }
+
+
+    </script>
+
+
+}
+
+
+
+

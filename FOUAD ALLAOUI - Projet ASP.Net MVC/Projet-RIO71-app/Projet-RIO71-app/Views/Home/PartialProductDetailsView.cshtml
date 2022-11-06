@@ -1,0 +1,23 @@
+﻿@{
+    var prodouit = ViewBag.Prod;
+}
+<link href="~/Content/myowenstyle/Details.css" rel="stylesheet" />
+<link href="~/Content/myowenstyle/partialeprod.css" rel="stylesheet" />
+
+<div style="background-color: white; border-radius: 25px;padding:20px; margin: 20px;">
+    <div class="row p-2 bg-white border rounded">
+        <div class="col-6 col-sm-3"><img style="border-radius: 15px; " class="img-fluid img-responsive rounded product-image" src="~/Images/ctalogue_image/cata2.jpg"></div>
+        <div class="col-6 col-sm-3">
+            <h3>Name of prod</h3>
+            <p class="text-justify text-truncate para mb-0">Description of prod<br><br></p>
+        </div>
+        <div class="align-items-center align-content-center col-md-3 border-left mt-1">
+            <div class="d-flex flex-row align-items-center">               
+                <h4 class="mr-1">$Prix</h4><span class="strike-text">old price </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
